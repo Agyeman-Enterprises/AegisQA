@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "AegisQA LiveAction Automation Engine",
+  "version": "1.0.0",
+  "description": "Real-time, visible browser automation and test recorder powered by native Chrome DevTools Protocol (CDP).",
+  "permissions": [
+    "debugger",
+    "activeTab",
+    "tabs",
+    "scripting",
+    "storage",
+    "sidePanel"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Open AegisQA"
+  },
+  "side_panel": {
+    "default_path": "panel.html"
+  }
+}

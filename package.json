@@ -1,0 +1,21 @@
+{
+  "name": "aegis-qa",
+  "version": "1.0.0",
+  "description": "LiveAction QA Browser Extension and CLI Companion",
+  "main": "launcher.js",
+  "scripts": {
+    "start": "node launcher.js"
+  },
+  "dependencies": {
+    "ws": "^8.16.0"
+  },
+  "keywords": [
+    "qa",
+    "cdp",
+    "chrome-extension",
+    "automation",
+    "testing"
+  ],
+  "author": "agyeman-enterprises",
+  "license": "MIT"
+}

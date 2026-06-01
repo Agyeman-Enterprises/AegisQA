@@ -1,0 +1,6 @@
+.chrome-profile/
+.diag-profile/
+chrome-profile/
+node_modules/
+report.json
+*.log

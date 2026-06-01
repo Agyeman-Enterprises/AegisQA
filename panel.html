@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>AegisQA Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="panel.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="logo-area">
+      <div class="logo-icon"></div>
+      <div class="logo-text">
+        <h1>Aegis<span>QA</span></h1>
+        <p class="subtitle">LiveAction Engine v2026.1</p>
+      </div>
+    </div>
+    <div class="connection-status" id="connection-status">
+      <span class="status-dot offline"></span>
+      <span class="status-text">CDP Disconnected</span>
+    </div>
+  </header>
+
+  <nav class="nav-tabs">
+    <button class="tab-btn active" data-tab="runner-tab">
+      <svg class="tab-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      Run
+    </button>
+    <button class="tab-btn" data-tab="suites-tab">
+      <svg class="tab-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+      Suites
+    </button>
+    <button class="tab-btn" data-tab="gate-tab">
+      <svg class="tab-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      Gate
+    </button>
+    <button class="tab-btn" data-tab="diagnostics-tab">
+      <svg class="tab-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg>
+      Logs
+    </button>
+  </nav>
+
+  <main class="tab-content-container">
+    <!-- RUNNER TAB -->
+    <section class="tab-panel active" id="runner-tab">
+      <div class="panel-section">
+        <div class="section-header">
+          <h3>Execution Controller</h3>
+          <div class="target-indicator" id="target-indicator">No active target</div>
+        </div>
+        
+        <div class="controls-card">
+          <div class="btn-grid">
+            <button id="btn-record" class="ctrl-btn record-btn">
+              <span class="btn-pulse-dot"></span>
+              Record Flow
+            </button>
+            <button id="btn-run" class="ctrl-btn play-btn" disabled>
+              <svg viewBox="0 0 24 24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+              Replay Flow
+            </button>
+          </div>
+          
+          <div class="action-btn-row">
+            <button id="btn-add-assert" class="sec-btn" disabled>
+              <svg class="btn-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+              Add Assertion
+            </button>
+            <button id="btn-add-wait" class="sec-btn" disabled>
+              <svg class="btn-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+              Insert Wait
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-section flex-grow">
+        <div class="section-header">
+          <h3>Live Telemetry Stream</h3>
+          <span class="badge" id="step-count">0 Steps</span>
+        </div>
+        
+        <div class="step-log-view" id="step-log-view">
+          <div class="empty-state">
+            <div class="empty-icon">⚡</div>
+            <p>No steps recorded yet.</p>
+            <p class="sub">Click "Record Flow" to start capturing user actions live in the current tab.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-actions">
+        <button id="btn-export" class="primary-action-btn" disabled>
+          <svg class="btn-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+          Export AI Agent Report
+        </button>
+      </div>
+    </section>
+
+    <!-- SUITES TAB -->
+    <section class="tab-panel" id="suites-tab">
+      <div class="panel-section">
+        <h3>Create New Scenario</h3>
+        <div class="form-group">
+          <label for="scenario-name">Scenario Name</label>
+          <input type="text" id="scenario-name" placeholder="e.g. User Login & Checkout">
+        </div>
+        <div class="form-group">
+          <label for="scenario-suite">Suite Category</label>
+          <select id="scenario-suite">
+            <option value="Smoke Test">Smoke Test</option>
+            <option value="Auth Test">Auth Test</option>
+            <option value="CRUD Test">CRUD Test</option>
+            <option value="Navigation Test">Navigation Test</option>
+            <option value="Release Candidate Test">Release Candidate Test</option>
+          </select>
+        </div>
+        <button id="btn-save-scenario" class="sec-btn width-100" disabled>Save Current Steps as Scenario</button>
+      </div>
+
+      <div class="panel-section flex-grow">
+        <h3>Saved Scenarios</h3>
+        <div class="scenario-list" id="scenario-list">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- RELEASE GATE TAB -->
+    <section class="tab-panel" id="gate-tab">
+      <div class="gate-status-card" id="gate-status-card">
+        <div class="gate-icon-large" id="gate-icon-large">✓</div>
+        <h2 id="gate-title">System Status: Ready</h2>
+        <p id="gate-desc">Run a test suite to calculate real-time release readiness gates.</p>
+      </div>
+
+      <div class="panel-section">
+        <h3>Release Readiness Criteria</h3>
+        <ul class="criteria-list">
+          <li id="crit-smoke"><span class="bullet gray"></span> Smoke Test Success</li>
+          <li id="crit-crud"><span class="bullet gray"></span> Core CRUD Scenarios Pass</li>
+          <li id="crit-errors"><span class="bullet gray"></span> Zero Console Exceptions</li>
+          <li id="crit-assert"><span class="bullet gray"></span> Business Outcome Assertions</li>
+        </ul>
+      </div>
+
+      <div class="panel-section">
+        <h3>Promotion Gate Outcome</h3>
+        <div class="gate-outcome-badge" id="gate-outcome-badge">AWAITING TESTING</div>
+      </div>
+    </section>
+
+    <!-- DIAGNOSTICS TAB -->
+    <section class="tab-panel" id="diagnostics-tab">
+      <div class="panel-section flex-grow scrollable">
+        <h3>Evidence & Diagnostic Report</h3>
+        <div class="diagnostic-summary" id="diagnostic-summary">
+          <p>No suite failures currently detected. Run tests to capture real-time debug footprints.</p>
+        </div>
+
+        <div id="diagnostics-detail" style="display: none;">
+          <div class="failure-box">
+            <h4 id="diag-fail-title">Selector Missing Error</h4>
+            <p id="diag-fail-desc" class="mono"></p>
+          </div>
+
+          <div class="diagnostic-section">
+            <h5>Failed Target & Attempted Selectors</h5>
+            <div id="diag-attempted-selectors" class="mono-box"></div>
+          </div>
+
+          <div class="diagnostic-section">
+            <h5>Failure Screenshot</h5>
+            <div class="screenshot-container">
+              <img id="diag-screenshot" src="" alt="Failure Screenshot">
+            </div>
+          </div>
+
+          <div class="diagnostic-section">
+            <h5>DOM Excerpt at Failure Point</h5>
+            <pre class="dom-excerpt" id="diag-dom-excerpt"></pre>
+          </div>
+
+          <div class="diagnostic-section">
+            <h5>Console Dumps</h5>
+            <div class="console-box" id="diag-console-errors"></div>
+          </div>
+          
+          <div class="diagnostic-section">
+            <h5>AI Agent Repair Prompt</h5>
+            <button id="btn-copy-repair" class="sec-btn width-100 green-hover">Copy Prompt for Cursor/Claude</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODALS -->
+  <div class="modal-backdrop" id="modal-assert">
+    <div class="modal-card">
+      <h4>Add Assertion</h4>
+      <p class="modal-sub">Assert conditions on the target element you just recorded, or create a global assertion.</p>
+      
+      <div class="form-group">
+        <label for="assert-type">Assertion Type</label>
+        <select id="assert-type">
+          <option value="ASSERT_VISIBLE">Element is Visible</option>
+          <option value="ASSERT_TEXT">Element Contains Text</option>
+          <option value="ASSERT_VALUE">Form Field Has Value</option>
+          <option value="ASSERT_URL">URL Matches Route</option>
+          <option value="ASSERT_ENABLED">Element is Enabled</option>
+          <option value="ASSERT_DISABLED">Element is Disabled</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="assert-sel-group">
+        <label for="assert-selector">Selector (Default: Last Clicked Element)</label>
+        <input type="text" id="assert-selector" placeholder="e.g. #submit-btn">
+      </div>
+
+      <div class="form-group" id="assert-val-group" style="display: none;">
+        <label for="assert-expected-value">Expected Value / Text Content</label>
+        <input type="text" id="assert-expected-value" placeholder="e.g. Success, Invoice Created">
+      </div>
+
+      <div class="modal-actions">
+        <button class="cancel-btn" id="modal-assert-cancel">Cancel</button>
+        <button class="confirm-btn" id="modal-assert-confirm">Insert</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modal-wait">
+    <div class="modal-card">
+      <h4>Insert Wait Strategy</h4>
+      <p class="modal-sub">Avoid fragile time sleeps by waiting for deterministic app state mutation events.</p>
+      
+      <div class="form-group">
+        <label for="wait-type">Wait Strategy</label>
+        <select id="wait-type">
+          <option value="WAIT_FOR_VISIBLE">Wait Until Element Visible</option>
+          <option value="WAIT_FOR_HIDDEN">Wait Until Element Hidden</option>
+          <option value="WAIT_FOR_NETWORK_IDLE">Wait Until Network Idle (0 pending requests)</option>
+          <option value="WAIT_FOR_URL">Wait Until URL Changes</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="wait-sel-group">
+        <label for="wait-selector">Target Element Selector</label>
+        <input type="text" id="wait-selector" placeholder="e.g. #loading-spinner">
+      </div>
+
+      <div class="form-group">
+        <label for="wait-timeout">Timeout Limit (milliseconds)</label>
+        <input type="number" id="wait-timeout" value="5000" min="500">
+      </div>
+
+      <div class="modal-actions">
+        <button class="cancel-btn" id="modal-wait-cancel">Cancel</button>
+        <button class="confirm-btn" id="modal-wait-confirm">Insert</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="panel.js"></script>
+</body>
+</html>
