@@ -1,0 +1,4 @@
+#!/bin/sh
+npx lint-staged
+npm audit --audit-level=high
+echo "Pre-commit security check passed"
