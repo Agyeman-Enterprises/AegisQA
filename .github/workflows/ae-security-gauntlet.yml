@@ -1,0 +1,53 @@
+name: ae-security-gauntlet
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  gauntlet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install deps
+        run: npm ci
+
+      - name: TypeScript check
+        run: npx tsc --noEmit
+
+      - name: Dependency audit
+        run: npm audit --audit-level=high
+
+      - name: Secret scan (Gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: NEXT_PUBLIC_ exposure check
+        run: |
+          echo "Checking for hardcoded secrets in NEXT_PUBLIC_ vars..."
+          if grep -r "NEXT_PUBLIC_.*SECRET\|NEXT_PUBLIC_.*KEY\|NEXT_PUBLIC_.*PASSWORD" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.env*" . 2>/dev/null | grep -v "node_modules" | grep -v ".git"; then
+            echo "::error::Potential secret exposed via NEXT_PUBLIC_ prefix"
+            exit 1
+          fi
+          echo "NEXT_PUBLIC_ check passed"
+
+      - name: Lockfile integrity check
+        run: |
+          if [ ! -f package-lock.json ] && [ ! -f yarn.lock ] && [ ! -f pnpm-lock.yaml ]; then
+            echo "::warning::No lockfile found — unpinned dependencies"
+          fi
+
+      - name: Floating version warning
+        run: |
+          if grep -E '"[^"]+": "\^|~' package.json 2>/dev/null | grep -v "devDependencies" | head -20; then
+            echo "::warning::Production dependencies have floating versions (^ or ~)"
+          fi
