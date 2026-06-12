@@ -4,7 +4,8 @@
   "description": "LiveAction QA Browser Extension and CLI Companion",
   "main": "launcher.js",
   "scripts": {
-    "start": "node launcher.js"
+    "start": "node launcher.js",
+    "prepare": "husky"
   },
   "dependencies": {
     "ws": "^8.16.0"
@@ -17,5 +18,18 @@
     "testing"
   ],
   "author": "agyeman-enterprises",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "husky": "^9.0.0",
+    "lint-staged": "^15.0.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "package.json": [
+      "npm audit --audit-level=high"
+    ]
+  }
 }
