@@ -1,0 +1,8 @@
+#!/bin/sh
+# Enforce conventional commit format
+commit_regex='^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\(.+\))?: .{1,100}'
+if ! grep -qE "$commit_regex" "$1"; then
+  echo "Commit message must follow conventional commits format"
+  echo "Example: fix(auth): add auth gate to AI routes"
+  exit 1
+fi
